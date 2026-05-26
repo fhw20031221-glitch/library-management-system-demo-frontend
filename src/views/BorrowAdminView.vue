@@ -30,9 +30,15 @@
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="borrowDate" label="借出日期" width="120" />
-        <el-table-column prop="dueDate" label="归还期限" width="120" />
-        <el-table-column prop="createdAt" label="申请时间" width="190" />
+        <el-table-column label="借出日期" width="120">
+          <template #default="{ row }">{{ formatDate(row.borrowDate) }}</template>
+        </el-table-column>
+        <el-table-column label="归还期限" width="120">
+          <template #default="{ row }">{{ formatDate(row.dueDate) }}</template>
+        </el-table-column>
+        <el-table-column label="申请时间" width="190">
+          <template #default="{ row }">{{ formatDateTime(row.createdAt) }}</template>
+        </el-table-column>
         <el-table-column label="操作" width="300" fixed="right">
           <template #default="{ row }">
             <el-button :icon="View" size="small" @click="goDetail(row)">详情</el-button>
@@ -113,7 +119,7 @@ import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Check, Close, Finished, Refresh, Search, View } from '@element-plus/icons-vue'
 import { approveBorrowApplication, listBorrowApplications, returnBorrowBook } from '../api/borrow'
-import { borrowStatusMap, statusText, statusType } from '../utils/status'
+import { borrowStatusMap, formatDate, formatDateTime, statusText, statusType } from '../utils/status'
 
 const router = useRouter()
 const loading = ref(false)

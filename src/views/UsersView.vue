@@ -52,7 +52,9 @@
         </el-table-column>
         <el-table-column prop="phone" label="手机号" width="140" />
         <el-table-column prop="email" label="邮箱" min-width="180" />
-        <el-table-column prop="createdAt" label="创建时间" width="190" />
+        <el-table-column label="创建时间" width="190">
+          <template #default="{ row }">{{ formatDateTime(row.createdAt) }}</template>
+        </el-table-column>
         <el-table-column label="操作" width="300" fixed="right">
           <template #default="{ row }">
             <el-button :icon="Edit" size="small" @click="openEdit(row)">编辑</el-button>
@@ -147,7 +149,7 @@ import { onMounted, reactive, ref } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Check, Close, Edit, Key, Plus, Refresh, Search } from '@element-plus/icons-vue'
 import { createUser, listUsers, resetUserPassword, updateUser, updateUserStatus } from '../api/users'
-import { statusText, statusType, userStatusMap } from '../utils/status'
+import { formatDateTime, statusText, statusType, userStatusMap } from '../utils/status'
 
 const loading = ref(false)
 const saving = ref(false)

@@ -22,3 +22,17 @@ export function statusText(map, value) {
 export function statusType(map, value) {
   return map[value]?.type || 'info'
 }
+
+export function formatDate(value) {
+  if (!value) {
+    return '-'
+  }
+  return String(value).slice(0, 10)
+}
+
+export function formatDateTime(value) {
+  if (!value) {
+    return '-'
+  }
+  return String(value).replace('T', ' ').slice(0, 19)
+}
