@@ -1,24 +1,27 @@
 import { reactive } from 'vue'
 
-const savedUser = localStorage.getItem('library_user')
+const AUTH_TOKEN_KEY = 'library_token'
+const AUTH_USER_KEY = 'library_user'
+const storage = sessionStorage
+const savedUser = storage.getItem(AUTH_USER_KEY)
 
 export const authState = reactive({
-  token: localStorage.getItem('library_token') || '',
+  token: storage.getItem(AUTH_TOKEN_KEY) || '',
   user: savedUser ? JSON.parse(savedUser) : null
 })
 
 export function setAuth(payload) {
   authState.token = payload.token
   authState.user = payload.user
-  localStorage.setItem('library_token', payload.token)
-  localStorage.setItem('library_user', JSON.stringify(payload.user))
+  storage.setItem(AUTH_TOKEN_KEY, payload.token)
+  storage.setItem(AUTH_USER_KEY, JSON.stringify(payload.user))
 }
 
 export function clearAuth() {
   authState.token = ''
   authState.user = null
-  localStorage.removeItem('library_token')
-  localStorage.removeItem('library_user')
+  storage.removeItem(AUTH_TOKEN_KEY)
+  storage.removeItem(AUTH_USER_KEY)
 }
 
 export function hasRole(roles = []) {
