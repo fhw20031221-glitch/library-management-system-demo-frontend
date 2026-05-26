@@ -31,7 +31,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="borrowDate" label="借出日期" width="120" />
-        <el-table-column prop="dueDate" label="应还日期" width="120" />
+        <el-table-column prop="dueDate" label="归还期限" width="120" />
         <el-table-column prop="createdAt" label="申请时间" width="190" />
         <el-table-column label="操作" width="300" fixed="right">
           <template #default="{ row }">
@@ -90,6 +90,9 @@
         <el-form-item label="申请人">
           <el-input v-model="approvalForm.nickname" disabled />
         </el-form-item>
+        <el-form-item label="归还期限">
+          <el-input v-model="approvalForm.dueDate" disabled />
+        </el-form-item>
         <el-form-item label="审批意见">
           <el-input v-model="approvalForm.comment" type="textarea" :rows="4" maxlength="500" show-word-limit />
         </el-form-item>
@@ -129,6 +132,7 @@ const approvalForm = reactive({
   approved: true,
   bookTitle: '',
   nickname: '',
+  dueDate: '',
   comment: ''
 })
 
@@ -160,6 +164,7 @@ function openApproval(row, approved) {
   approvalForm.approved = approved
   approvalForm.bookTitle = row.bookTitle
   approvalForm.nickname = row.nickname
+  approvalForm.dueDate = row.dueDate || ''
   approvalForm.comment = approved ? '同意借阅，请按期归还。' : ''
   approvalDialogVisible.value = true
 }

@@ -144,9 +144,20 @@
     </el-dialog>
 
     <el-dialog v-model="borrowDialogVisible" title="提交借阅申请" width="520px">
-      <el-form ref="borrowFormRef" :model="borrowForm" label-width="88px">
+      <el-form ref="borrowFormRef" :model="borrowForm" :rules="borrowRules" label-width="88px">
         <el-form-item label="图书">
           <el-input v-model="borrowForm.bookTitle" disabled />
+        </el-form-item>
+        <el-form-item label="归还日期" prop="dueDate">
+          <el-date-picker
+            v-model="borrowForm.dueDate"
+            class="full-control"
+            type="date"
+            value-format="YYYY-MM-DD"
+            format="YYYY-MM-DD"
+            placeholder="选择归还日期"
+            :disabled-date="disabledDueDate"
+          />
         </el-form-item>
         <el-form-item label="申请说明">
           <el-input v-model="borrowForm.reason" type="textarea" :rows="4" maxlength="500" show-word-limit />
@@ -193,11 +204,16 @@ const bookRules = {
 }
 
 const borrowDialogVisible = ref(false)
+const borrowFormRef = ref()
 const borrowForm = reactive({
   bookId: null,
   bookTitle: '',
+  dueDate: '',
   reason: ''
 })
+const borrowRules = {
+  dueDate: [{ required: true, message: '请选择归还日期', trigger: 'change' }]
+}
 
 onMounted(load)
 
@@ -276,15 +292,18 @@ async function remove(row) {
 function openBorrow(row) {
   borrowForm.bookId = row.id
   borrowForm.bookTitle = row.title
+  borrowForm.dueDate = defaultDueDate()
   borrowForm.reason = ''
   borrowDialogVisible.value = true
 }
 
 async function submitBorrow() {
+  await borrowFormRef.value.validate()
   saving.value = true
   try {
     await createBorrowApplication({
       bookId: borrowForm.bookId,
+      dueDate: borrowForm.dueDate,
       reason: borrowForm.reason
     })
     ElMessage.success('借阅申请已提交')
@@ -292,5 +311,33 @@ async function submitBorrow() {
   } finally {
     saving.value = false
   }
+}
+
+function disabledDueDate(date) {
+  const value = startOfDay(date)
+  const today = startOfDay(new Date())
+  const maxDate = addDays(today, 30)
+  return value < today || value > maxDate
+}
+
+function defaultDueDate() {
+  return formatDate(addDays(startOfDay(new Date()), 30))
+}
+
+function startOfDay(date) {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate())
+}
+
+function addDays(date, days) {
+  const value = new Date(date)
+  value.setDate(value.getDate() + days)
+  return value
+}
+
+function formatDate(date) {
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  return `${year}-${month}-${day}`
 }
 </script>

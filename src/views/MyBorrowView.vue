@@ -32,7 +32,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="borrowDate" label="借出日期" width="120" />
-        <el-table-column prop="dueDate" label="应还日期" width="120" />
+        <el-table-column prop="dueDate" label="归还期限" width="120" />
         <el-table-column prop="createdAt" label="申请时间" width="190" />
         <el-table-column label="操作" width="180" fixed="right">
           <template #default="{ row }">

@@ -34,7 +34,7 @@
         <el-descriptions-item label="申请时间">{{ detail.createdAt || '-' }}</el-descriptions-item>
         <el-descriptions-item label="审批时间">{{ detail.approvedAt || '-' }}</el-descriptions-item>
         <el-descriptions-item label="借出日期">{{ detail.borrowDate || '-' }}</el-descriptions-item>
-        <el-descriptions-item label="应还日期">{{ detail.dueDate || '-' }}</el-descriptions-item>
+        <el-descriptions-item label="归还期限">{{ detail.dueDate || '-' }}</el-descriptions-item>
         <el-descriptions-item label="归还日期">{{ detail.returnDate || '-' }}</el-descriptions-item>
         <el-descriptions-item label="更新时间">{{ detail.updatedAt || '-' }}</el-descriptions-item>
         <el-descriptions-item label="申请说明" :span="2">
